@@ -26,15 +26,15 @@
   <!-- Resultado -->
   <p id="resultado" style="margin-top:15px; font-weight:bold;"></p>
 
-  <!-- 🔹 NUEVO: Botón continuar (oculto al inicio) -->
+  <!-- 🔹 Botón continuar -->
   <button id="continuar" style="display:none; margin-top:15px; padding:10px 20px; background:#06d6a0; border:none; border-radius:8px; cursor:pointer; font-size:16px;">
     Continuar ➜
   </button>
 </div>
 
 <style>
-  /* 🔹 No se cambió nada, se deja exactamente igual */
-  .opcion1 {
+  /* 🔹 NO SE MODIFICÓ NADA DEL ESTILO */
+  .opcion1, .opcion2, .opcion3, .opcion4, .opcion5 {
     background:#FFD60A;
     color: #000;
     border:4px solid #000;
@@ -48,65 +48,10 @@
     text-transform: uppercase;
     box-shadow: 2px 2px 0 #000;
   }
-  .opcion2 {
-    background:#FFD60A;
-    color: #000;
-    border:4px solid #000;
-    border-radius:4px;
-    padding:10px;
-    width:260px;
-    cursor:grab;
-    font-family: 'Bangers', cursive;
-    font-size: 16px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    box-shadow: 2px 2px 0 #000;
-  }
-  .opcion3 {
-    background:#FFD60A;
-    color: #000;
-    border:4px solid #000;
-    border-radius:4px;
-    padding:10px;
-    width:260px;
-    cursor:grab;
-    font-family: 'Bangers', cursive;
-    font-size: 16px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    box-shadow: 2px 2px 0 #000;
-  }
-  .opcion4 {
-    background:#FFD60A;
-    color: #000;
-    border:4px solid #000;
-    border-radius:4px;
-    padding:10px;
-    width:260px;
-    cursor:grab;
-    font-family: 'Bangers', cursive;
-    font-size: 16px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    box-shadow: 2px 2px 0 #000;
-  }
-  .opcion5 {
-    background:#FFD60A;
-    color: #000;
-    border:4px solid #000;
-    border-radius:4px;
-    padding:10px;
-    width:260px;
-    cursor:grab;
-    font-family: 'Bangers', cursive;
-    font-size: 16px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    box-shadow: 2px 2px 0 #000;
-  }
+
   .opcion:active { cursor:grabbing; }
 
-  .cuadro1{
+  .cuadro1, .cuadro2, .cuadro3, .cuadro4, .cuadro5 {
     width:200px;
     height:70px;
     border:2px dashed #999;
@@ -117,55 +62,11 @@
     border-color: black;
     background: white;
   }
-  .cuadro2{
-    width:180px;
-    height:60px;
-    border:2px dashed #999;
-    border-radius:8px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    margin-left: 30px;
-    border-color: black;
-    background: white;
-  }
-  .cuadro3{
-    width:200px;
-    height:70px;
-    border:2px dashed #999;
-    border-radius:8px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    margin-left: 12px;
-    margin-top: 8px;
-    border-color: black;
-    background: white;
-  }
-  .cuadro4{
-    width:190px;
-    height:70px;
-    border:2px dashed #999;
-    border-radius:8px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    margin-left: 40px;
-    border-color: black;
-    background: white;
-  }
-  .cuadro5{
-    width:200px;
-    height:80px;
-    border:2px dashed #999;
-    border-radius:8px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    margin-left: 30px;
-    border-color: black;
-    background: white;
-  }
+
+  .cuadro2 { width:180px; height:60px; margin-left:30px; }
+  .cuadro3 { width:200px; height:70px; margin-left:12px; margin-top:8px; }
+  .cuadro4 { width:190px; height:70px; margin-left:40px; }
+  .cuadro5 { width:200px; height:80px; margin-left:30px; }
 </style>
 
 <script>
@@ -173,21 +74,18 @@
   const cuadros = document.querySelectorAll('[class^="cuadro"]');
   const revisarBtn = document.getElementById('revisar');
   const resultado = document.getElementById('resultado');
-  const btnContinuar = document.getElementById('continuar'); // 🔹 nuevo botón
+  const btnContinuar = document.getElementById('continuar');
 
-  // Orden correcto según tu lógica
   let ordenCorrecto = ["C","E","B","D","A"];
-  
+
   opciones.forEach(op => {
     op.addEventListener('dragstart', e => {
       e.dataTransfer.setData('text', op.id);
       setTimeout(() => op.style.opacity = '0.5', 0);
     });
-    op.addEventListener('dragend', () => {
-      op.style.opacity = '1';
-    });
+    op.addEventListener('dragend', () => op.style.opacity = '1');
   });
-  
+
   cuadros.forEach(cuadro => {
     cuadro.addEventListener('dragover', e => e.preventDefault());
     cuadro.addEventListener('drop', e => {
@@ -195,19 +93,24 @@
       const idOp = e.dataTransfer.getData('text');
       const op = document.getElementById(idOp);
 
-      if (cuadro.childElementCount === 0) {
-        cuadro.appendChild(op);
-        cuadro.style.borderStyle = "solid";
-        cuadro.style.background = "#e0f7fa";
+      // 🔹 Si el cuadro ya tiene algo, lo devuelve al contenedor principal
+      if (cuadro.firstChild) {
+        document.getElementById('contenedor-frases').appendChild(cuadro.firstChild);
       }
+
+      // 🔹 Si la opción estaba en otro cuadro, se quita de allá
+      cuadros.forEach(c => {
+        if (c.contains(op)) c.removeChild(op);
+      });
+
+      cuadro.appendChild(op);
+      cuadro.style.borderStyle = "solid";
+      cuadro.style.background = "#e0f7fa";
     });
   });
-  
+
   revisarBtn.addEventListener('click', () => {
-    const ubicaciones = Array.from(opciones).map(op => {
-      const contenedor = op.parentElement;
-      return contenedor.dataset.pos;
-    });
+    const ubicaciones = Array.from(opciones).map(op => op.parentElement.dataset.pos);
 
     if (ubicaciones.includes(undefined)) {
       resultado.textContent = "⚠️ Coloca todas las opciones antes de revisar.";
@@ -221,16 +124,26 @@
     if (correcto) {
       resultado.textContent = "✅ ¡Correcto!";
       resultado.style.color = "#2a9d8f";
-      btnContinuar.style.display = "inline-block"; // 🔹 muestra el botón
+      btnContinuar.style.display = "inline-block";
     } else {
       resultado.textContent = "❌ Intenta de nuevo.";
       resultado.style.color = "#e63946";
       btnContinuar.style.display = "none";
+
+      // 🔹 Reiniciar posiciones
+      setTimeout(() => {
+        cuadros.forEach(cuadro => {
+          while (cuadro.firstChild) {
+            document.getElementById('contenedor-frases').appendChild(cuadro.firstChild);
+          }
+          cuadro.style.borderStyle = "dashed";
+          cuadro.style.background = "white";
+        });
+      }, 1000);
     }
   });
 
-  // 🔹 Al presionar continuar, avanza de página
   btnContinuar.addEventListener('click', () => {
-    window.location.href = "pagina2.html"; // ← cámbialo por la siguiente página en Genially
+    window.location.href = "pagina2.html"; // ← cambia esto por la siguiente página en tu Genially
   });
 </script>
